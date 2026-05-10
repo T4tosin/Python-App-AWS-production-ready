@@ -127,9 +127,9 @@ cd devops-challenge
 make run-app
 
 # App is live at:
-#   http://localhost:5000/
-#   http://localhost:5000/health
-#   http://localhost:5000/metrics
+#   http://localhost:8080/
+#   http://localhost:8080/health
+#   http://localhost:8080/metrics
 
 # 3. Run full stack with ELK monitoring
 make run
@@ -203,8 +203,8 @@ After the pipeline completes, get the URL from Terraform outputs:
 
 ```bash
 cd terraform && terraform output
-# app_url            = "http://<public-ip>:5000"
-# health_check_url   = "http://<public-ip>:5000/health"
+# app_url            = "http://<public-ip>:8080"
+# health_check_url   = "http://<public-ip>:8080/health"
 ```
 
 Or check the GitHub Actions summary — the deploy job writes the URL there.
@@ -313,7 +313,7 @@ GitHub Actions requires no server to maintain and integrates natively with the r
 - The deploying IAM user has sufficient permissions (listed in Prerequisites).
 - The S3 bucket name for Terraform state is globally unique — update `TF_STATE_BUCKET` if the default is taken.
 - The AMI ID (`ami-0c02fb55956c7d316`) is Amazon Linux 2023 in `us-east-1`. Update this if deploying to a different region.
-- Port 5000 is directly exposed. In a production hardening pass, an ALB + HTTPS termination would sit in front.
+- Port 8080 is directly exposed. In a production hardening pass, an ALB + HTTPS termination would sit in front.
 
 ---
 
@@ -321,7 +321,7 @@ GitHub Actions requires no server to maintain and integrates natively with the r
 
 | Area | Current | Improvement |
 |------|---------|-------------|
-| TLS/HTTPS | None — HTTP only on :5000 | Add Application Load Balancer + ACM certificate |
+| TLS/HTTPS | None — HTTP only on :8080 | Add Application Load Balancer + ACM certificate |
 | Scaling | Single EC2 instance | Auto Scaling Group behind an ALB |
 | Database | None | Add RDS (Postgres) with private subnet |
 | Secrets | Environment variables | AWS Secrets Manager or Parameter Store |
